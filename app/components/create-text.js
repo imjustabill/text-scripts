@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   createdTextList: null,
 
-  base: 'base.',
+  base: '',
 
-  key: 'key.name',
+  key: '',
 
   /**
    * Great example of computed property
@@ -21,44 +21,84 @@ export default Ember.Component.extend({
     }
   }),
 
-  text: 'This is the English Text',
+  text: '',
 
   hasPlaceholder: true,
 
   placeHolderSuffix: null,
 
+  placeHolderSuffixComputed: Ember.computed('placeHolderSuffix', {
+    get() {
+      const placeHolderSuffix = this.get('placeHolderSuffix');
+      return this.placeHolderSuffix ? this.placeHolderSuffix : '.text';
+    }
+  }),
+
+  requiredKeyDisplay: Ember.computed('base', 'key', 'requiredErrorTextComputed', 'requiredPrefixComputed', 'requiredSuffixComputed', {
+    get() {
+      const base = this.get('base');
+      const key = this.get('key');
+      const requiredErrorTextComputed = this.get('requiredErrorTextComputed');
+      const requiredPrefixComputed = this.get('requiredPrefixComputed');
+      const requiredSuffixComputed = this.get('requiredSuffixComputed');
+      return `${base}${requiredPrefixComputed}${key}${requiredSuffixComputed} = ${requiredErrorTextComputed}`;
+    }
+  }),
+
   hasRequired: true,
 
   requiredErrorText: null,
 
+  requiredErrorTextComputed: Ember.computed('requiredErrorText', 'text', {
+    get() {
+      const requiredErrorText = this.get('requiredErrorText');
+      const text = this.get('text');
+      return requiredErrorText ? requiredErrorText : text + ' is required.';
+    }
+  }),
+
   requiredPrefix: null,
 
+  requiredPrefixComputed: Ember.computed('requiredPrefix', {
+    get() {
+      const requiredPrefix = this.get('requiredPrefix');
+      return requiredPrefix ? requiredPrefix : 'validate.';
+    }
+  }),
+
   requiredSuffix: null,
+
+  requiredSuffixComputed: Ember.computed('requiredSuffix', {
+    get() {
+      const requiredSuffix = this.get('requiredSuffix');
+      return requiredSuffix ? requiredSuffix : '.required';
+    }
+  }),
 
   ticketNumber: 'DDB-1234',
 
   createTextObjects: function() {
-    let keyObjects = Ember.A();
-    let key = {
+    const keyObjects = Ember.A();
+    const key = {
       base: this.base || '',
       key: this.key || '',
       text: this.text || '',
-      ticketNumber: this.ticketNumber || '',
-      hasRequired: this.hasRequired,
-      hasPlaceholder: this.hasPlaceholder,
-      placeHolderText: this.placeHolderText || ''
+      ticketNumber: this.get('ticketNumber') || '',
+      hasRequired: this.get('hasRequired'),
+      hasPlaceholder: this.get('hasPlaceholder'),
+      placeHolderText: this.get('placeHolderText') || ''
     };
 
     if (this.hasRequired) {
       key.hasRequired = true;
-      key.requiredPrefix = this.requiredPrefix ? this.requiredPrefix : 'validate.';
-      key.requiredSuffix = this.requiredSuffix ? this.requiredSuffix : '.required';
-      key.requiredErrorText = this.requiredErrorText ? this.requiredErrorText : ' is required.';
+      key.requiredPrefix = this.get('requiredPrefixComputed');
+      key.requiredSuffix = this.get('requiredSuffixComputed');
+      key.requiredErrorText = this.get('requiredErrorTextComputed');
     }
 
     if (this.hasPlaceholder) {
       key.hasPlaceholder = true;
-      key.placeholderSuffix = this.placeHolderSuffix ? this.placeHolderSuffix : '.text';
+      key.placeholderSuffix = this.get('placeHolderSuffixComputed');
     }
 
     keyObjects.push(key);
