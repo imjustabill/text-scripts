@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="872d21b5-e4ef-41d5-a534-6c02b03cad44" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/components/create-text.js" afterPath="$PROJECT_DIR$/app/components/create-text.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/templates/components/create-text.hbs" afterPath="$PROJECT_DIR$/app/templates/components/create-text.hbs" />
     </list>
     <ignored path="text-scripts.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,8 +28,8 @@
       <file leaf-file-name="create-text.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/components/create-text.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.40633246">
-              <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.47757256">
+              <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
               <folding />
             </state>
           </provider>
@@ -784,12 +783,12 @@
       <option name="number" value="Default" />
       <updated>1457667209337</updated>
       <workItem from="1457667211074" duration="7071000" />
-      <workItem from="1457754398169" duration="28624000" />
+      <workItem from="1457754398169" duration="28790000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="35695000" />
+    <option name="totallyTimeSpent" value="35861000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="16" y="82" width="1440" height="873" extended-state="0" />
@@ -1028,8 +1027,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/components/create-text.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40633246">
-          <caret line="34" column="5" selection-start-line="34" selection-start-column="5" selection-end-line="34" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.47757256">
+          <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
           <folding />
         </state>
       </provider>

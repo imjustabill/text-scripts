@@ -23,7 +23,7 @@ export default Ember.Component.extend({
 
   text: '',
 
-  hasPlaceholder: true,
+  hasPlaceholder: false,
 
   placeHolderSuffix: null,
 
@@ -45,7 +45,7 @@ export default Ember.Component.extend({
     }
   }),
 
-  hasRequired: true,
+  hasRequired: false,
 
   requiredErrorText: null,
 
