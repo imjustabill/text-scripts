@@ -1,0 +1,10 @@
+{{#if sqlList}}
+  <h3 class="margin-top padding-top">SQL in scripts</h3>
+
+  <textarea id="sqlCode" class="pre-textarea" readonly="readonly">
+    {{#each sqlList as |data|}}
+      {{data}}
+
+    {{/each}}
+  </textarea>
+{{/if}}

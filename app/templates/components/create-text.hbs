@@ -1,0 +1,57 @@
+<form {{action "noop" on="submit"}}>
+  <table class="table table-striped table-condensed margin-bottom padding-bottom">
+    <tbody>
+    <tr class="info">
+      <td><label>Ticket #*</label> {{input class="form-control" name="ticket" type="text" placeholder="Ticket Number ( E.G. DDB-1234 )" value=ticketNumber autofocus="autofocus"}}</td>
+    </tr>
+    <tr class="info">
+      <td><label>Base Key*</label> {{input class="form-control" name="baseKey" type="text" value=base
+      placeholder="Base part of the key that does not reset ( E.G. settings.alerts. )"}}</td>
+    </tr>
+    <tr class="info">
+      <td><label>Key*</label> {{#if fullKey}}{{fullKey}}{{/if}} {{input class="form-control" name="key" type="text" value=key
+      placeholder="Enter rest of key name from base ( E.G. email )"}}</td>
+    </tr>
+    <tr class="info">
+      <td><label>Text*</label> {{input class="form-control" name="text" type="text" value=text
+      placeholder="Enter english text"}}</td>
+    </tr>
+    <tr class="info">
+      <td>
+      <span>
+        <label>{{input name="placeHolder" type="checkbox" checked=hasPlaceholder}} Placeholder Text</label>
+      </span>
+        {{#if hasPlaceholder}}
+          {{input name="suffixText" type="text" class="form-control"
+          placeholder="Placeholder Text*" value=placeHolderText}}
+          {{input name="suffixText" type="text" class="form-control"
+                 placeholder="Change default placeholder key suffix (.text)" value=placeHolderSuffix}}
+        {{/if}}
+      </td>
+    </tr>
+    <tr class="info">
+      <td>
+      <span>
+        <label>{{input name="required" type="checkbox" checked=hasRequired}} Required Validation</label>
+      </span>
+        {{#if hasRequired}}
+          {{input name="requiredText" type="text" class="form-control"
+          placeholder="Required Text*" value=requiredErrorText}}
+          {{input name="prefix" type="text" class="form-control" placeholder="Change default key prefix (validate.)" value=requiredPrefix}}
+          {{input name="suffix" type="text" class="form-control" placeholder="Change default key suffix (.required)" value=requiredSuffix}}
+        {{/if}}
+      </td>
+    </tr>
+    <tr>
+      <td class="text-center">
+        <button name="add" type="button" class="btn btn-default btn-primary" {{action 'addClicked'}}>Add</button>
+        <button name="addReset" type="button" class="btn btn-default btn-primary" {{action 'addResetClicked'}}>
+          Add/Reset
+        </button>
+        <button name="reset" type="button" class="btn btn-default btn-link" {{action 'resetClicked'}}>Reset
+        </button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</form>

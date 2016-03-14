@@ -1,0 +1,28 @@
+<h2 class="margin-bottom">Text Translations</h2>
+
+{{#if errorList}}
+  <div class="alert alert-danger">
+    <div>
+      <span><strong>Aw Snap!</strong></span>
+      <button type="button" class="close" {{action 'clearError'}}>
+        <span aria-hidden="true">&times;</span>
+        <span class="sr-only">Close</span>
+      </button>
+    </div>
+    <ul>
+      {{#each errorList as |error|}}
+        <li>{{error}}</li>
+      {{/each}}
+    </ul>
+  </div>
+{{/if}}
+
+<ul class="nav nav-tabs margin-bottom">
+  <li class="active"><a href="#">Create</a></li>
+  <li class="disabled"><a disabled="disabled" href="#">Import</a></li>
+  <li class="disabled"><a disabled="disabled" href="#">Update</a></li>
+  <li class="disabled"><a disabled="disabled" href="#">Delete</a></li>
+  <li class="disabled"><a disabled="disabled" href="#">Key List</a></li>
+</ul>
+
+{{outlet}}

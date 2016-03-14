@@ -1,0 +1,9 @@
+{{#if csvList}}
+  <h3 class="margin-top padding-top">CSV in services</h3>
+
+  <textarea id="csvCode" class="pre-textarea" readonly="readonly" onfocus="this.select();">
+    {{#each csvList as |data|}}
+      {{data}}
+    {{/each}}
+  </textarea>
+{{/if}}

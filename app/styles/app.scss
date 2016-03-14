@@ -1,0 +1,32 @@
+@import "bootstrap";
+
+body {
+  padding: 10px;
+}
+
+.margin-top {
+  margin-top: 15px;
+}
+
+.margin-bottom {
+  margin-bottom: 15px;
+}
+
+.padding-top {
+  padding-top: 15px;
+}
+
+.padding-bottom {
+  padding-bottom: 15px;
+}
+
+.table tr th {
+  @extend .text-center;
+}
+
+.pre-textarea {
+  white-space: nowrap;
+  overflow: auto;
+  min-width: 100%;
+  min-height: 400px;
+}

@@ -1,0 +1,26 @@
+{{#if createdTextList}}
+  <table class="table table-striped table-condensed margin-bottom padding-bottom">
+    <thead>
+    <tr>
+      <th>Key</th>
+      <th>Text</th>
+      <th>PlaceHolder</th>
+      <th>Required</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each createdTextList as |data|}}
+      <tr>
+        <td><strong>{{data.base}}{{data.key}}</strong></td>
+        <td>{{data.text}}</td>
+        <td class="text-center">{{data.hasPlaceholder}}</td>
+        <td class="text-center">{{data.hasRequired}}</td>
+        <td class="text-right">
+          <button type="button" class="btn btn-default btn-link" {{action 'removeClicked' data}}>Remove</button>
+        </td>
+      </tr>
+    {{/each}}
+    </tbody>
+  </table>
+{{/if}}
