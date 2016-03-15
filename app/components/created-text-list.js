@@ -5,7 +5,7 @@ export default Ember.Component.extend({
 
   actions: {
     removeClicked(dataObject) {
-      this.createdTextList.removeObject(dataObject);
+      this.get('createdTextList').removeObject(dataObject);
     }
   }
 

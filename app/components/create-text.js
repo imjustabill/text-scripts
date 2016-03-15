@@ -30,7 +30,7 @@ export default Ember.Component.extend({
   placeHolderSuffixComputed: Ember.computed('placeHolderSuffix', {
     get() {
       const placeHolderSuffix = this.get('placeHolderSuffix');
-      return this.placeHolderSuffix ? this.placeHolderSuffix : '.text';
+      return placeHolderSuffix ? placeHolderSuffix : '.text';
     }
   }),
 
@@ -117,11 +117,11 @@ export default Ember.Component.extend({
   actions: {
     addClicked() {
       let keyObjects = this.createTextObjects();
-      this.createdTextList.pushObjects(keyObjects);
+      this.get('createdTextList').pushObjects(keyObjects);
     },
     addResetClicked() {
       let keyObjects = this.createTextObjects();
-      this.createdTextList.pushObjects(keyObjects);
+      this.get('createdTextList').pushObjects(keyObjects);
       this.resetForm();
     },
     resetClicked() {

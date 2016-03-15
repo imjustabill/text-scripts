@@ -45,7 +45,7 @@ export default Ember.Controller.extend({
 
         let key = `${textObject.base}${textObject.key}`;
         let sql = `insert into l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-          svalues ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${textObject.text}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en'));`;
+          values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${textObject.text}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en'));`;
         sqlList.pushObject(sql);
         queryCount++;
         if (textObject.hasRequired) {
