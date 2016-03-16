@@ -1,5 +1,5 @@
 <form {{action "noop" on="submit"}}>
-  <table class="table table-striped table-condensed margin-bottom padding-bottom">
+  <table class="table table-condensed margin-bottom padding-bottom">
     <tbody>
     <tr class="info">
       <td><label>Ticket
@@ -16,22 +16,23 @@
     </tr>
     <tr class="info">
       <td><label>Text*</label> {{#if fullKey}}{{fullKey}}{{/if}} {{#if text}}
-        = {{text}}{{/if}} {{input class="form-control" name="text" type="text" value=text
-      placeholder="Enter english text"}}</td>
+        = {{text}}{{/if}} {{input class="form-control" name="text" type="text" value=text placeholder="Enter english text"}}
+      </td>
     </tr>
     <tr class="info">
       <td>
       <span>
-        <label>{{input name="placeHolder" type="checkbox" checked=hasPlaceholder}} Placeholder Text</label>
+        <label>{{input name="placeholder" type="checkbox" checked=hasPlaceholder}} Placeholder Text</label>
         {{#if hasPlaceholder}}
-          {{#if fullKey}}{{fullKey}}{{/if}}{{placeHolderSuffixComputed}} = {{#if placeHolderText}}{{placeHolderText}}{{/if}}
+          {{#if fullPlaceholderKey}}{{fullPlaceholderKey}}{{/if}}
+          {{#if placeholderTextComputed}} = {{placeholderTextComputed}}{{/if}}
         {{/if}}
       </span>
         {{#if hasPlaceholder}}
           {{input name="suffixText" type="text" class="form-control"
-          placeholder="Placeholder Text" value=placeHolderText}}
+          placeholder="Placeholder Text" value=placeholderText}}
           {{input name="suffixText" type="text" class="form-control"
-          placeholder="Change default placeholder key suffix (.text)" value=placeHolderSuffix}}
+          placeholder="Change default placeholder key suffix (.text)" value=placeholderSuffix}}
         {{/if}}
       </td>
     </tr>

@@ -3,16 +3,15 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   createdTextList: null,
 
-  base: '',
+  base: null,
 
-  key: '',
+  key: null,
 
   /**
    * Great example of computed property
    */
   fullKey: Ember.computed('base', 'key', {
     get() {
-
       const base = this.get('base') || '';
       const key = this.get('key') || '';
 
@@ -21,23 +20,41 @@ export default Ember.Component.extend({
     }
   }),
 
-  text: '',
+  text: null,
 
   hasPlaceholder: false,
 
-  placeHolderSuffix: null,
+  placeholderSuffix: null,
 
-  placeHolderSuffixComputed: Ember.computed('placeHolderSuffix', {
+  placeholderSuffixComputed: Ember.computed('placeholderSuffix', {
     get() {
-      const placeHolderSuffix = this.get('placeHolderSuffix');
-      return placeHolderSuffix ? placeHolderSuffix : '.text';
+      const placeholderSuffix = this.get('placeholderSuffix');
+      return placeholderSuffix ? placeholderSuffix : '.text';
+    }
+  }),
+
+  placeholderText: null,
+
+  placeholderTextComputed: Ember.computed('placeholderText', 'text', {
+    get() {
+      const placeholderText = this.get('placeholderText');
+      const text = this.get('text') || '';
+      return placeholderText ? placeholderText : text;
+    }
+  }),
+
+  fullPlaceholderKey: Ember.computed('fullKey', 'placeholderSuffixComputed', {
+    get() {
+      const fullKey = this.get('fullKey');
+      const placeholderSuffixComputed = this.get('placeholderSuffixComputed');
+      return fullKey + placeholderSuffixComputed;
     }
   }),
 
   requiredKeyDisplay: Ember.computed('base', 'key', 'requiredErrorTextComputed', 'requiredPrefixComputed', 'requiredSuffixComputed', {
     get() {
-      const base = this.get('base');
-      const key = this.get('key');
+      const base = this.get('base') || '';
+      const key = this.get('key') || '';
       const requiredErrorTextComputed = this.get('requiredErrorTextComputed');
       const requiredPrefixComputed = this.get('requiredPrefixComputed');
       const requiredSuffixComputed = this.get('requiredSuffixComputed');
@@ -52,7 +69,7 @@ export default Ember.Component.extend({
   requiredErrorTextComputed: Ember.computed('requiredErrorText', 'text', {
     get() {
       const requiredErrorText = this.get('requiredErrorText');
-      const text = this.get('text');
+      const text = this.get('text') || '';
       return requiredErrorText ? requiredErrorText : text + ' is required.';
     }
   }),
@@ -85,8 +102,7 @@ export default Ember.Component.extend({
       text: this.text || '',
       ticketNumber: this.get('ticketNumber') || '',
       hasRequired: this.get('hasRequired'),
-      hasPlaceholder: this.get('hasPlaceholder'),
-      placeHolderText: this.get('placeHolderText') || ''
+      hasPlaceholder: this.get('hasPlaceholder')
     };
 
     if (this.hasRequired) {
@@ -98,7 +114,8 @@ export default Ember.Component.extend({
 
     if (this.hasPlaceholder) {
       key.hasPlaceholder = true;
-      key.placeholderSuffix = this.get('placeHolderSuffixComputed');
+      key.placeholderText = this.get('placeholderTextComputed');
+      key.placeholderSuffix = this.get('placeholderSuffixComputed');
     }
 
     keyObjects.push(key);
@@ -111,7 +128,7 @@ export default Ember.Component.extend({
     this.set('hasPlaceholder', false);
     this.set('hasRequired', false);
     this.set('requiredErrorText', null);
-    this.set('placeHolderText', null);
+    this.set('placeholderText', null);
   },
 
   actions: {

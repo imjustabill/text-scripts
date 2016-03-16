@@ -22,8 +22,8 @@ export default Ember.Controller.extend({
           csvList.pushObject(csvRequired);
         }
         if (textObject.hasPlaceholder) {
-          let placeHolderKeyname = `${textObject.base}${textObject.key}${textObject.placeholderSuffix}`;
-          let csvPlaceholder = `"${placeHolderKeyname}","${textObject.placeHolderText}",""`;
+          let placeholderKeyname = `${textObject.base}${textObject.key}${textObject.placeholderSuffix}`;
+          let csvPlaceholder = `"${placeholderKeyname}","${textObject.placeholderText}",""`;
           csvList.pushObject(csvPlaceholder);
         }
       });
@@ -57,9 +57,9 @@ export default Ember.Controller.extend({
           queryCount++;
         }
         if (textObject.hasPlaceholder) {
-          let placeHolderKeyname = `${textObject.base}${textObject.key}${textObject.placeholderSuffix}`;
+          let placeholderKeyname = `${textObject.base}${textObject.key}${textObject.placeholderSuffix}`;
           let csvPlaceholder = `insert into l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-            values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${placeHolderKeyname}', '${textObject.placeHolderText}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en'));`;
+            values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${placeholderKeyname}', '${textObject.placeholderText}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en'));`;
 
           sqlList.pushObject(csvPlaceholder);
           queryCount++;
