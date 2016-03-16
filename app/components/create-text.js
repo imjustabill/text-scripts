@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   key: null,
 
   /**
-   * Great example of computed property
+   * Great example of simple computed property
    */
   fullKey: Ember.computed('base', 'key', {
     get() {
