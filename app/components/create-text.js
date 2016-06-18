@@ -92,10 +92,9 @@ export default Ember.Component.extend({
     }
   }),
 
-  ticketNumber: 'DDB-1234',
+  ticketNumber: '',
 
-  createTextObjects: function() {
-    const keyObjects = Ember.A();
+  createTextObject: function() {
     const key = {
       base: this.base || '',
       key: this.key || '',
@@ -118,8 +117,7 @@ export default Ember.Component.extend({
       key.placeholderSuffix = this.get('placeholderSuffixComputed');
     }
 
-    keyObjects.push(key);
-    return keyObjects;
+    return key;
   },
 
   resetForm: function() {
@@ -133,12 +131,12 @@ export default Ember.Component.extend({
 
   actions: {
     addClicked() {
-      let keyObjects = this.createTextObjects();
-      this.get('createdTextList').pushObjects(keyObjects);
+      const key = this.createTextObject();
+      this.get('createdTextList').pushObject(key);
     },
     addResetClicked() {
-      let keyObjects = this.createTextObjects();
-      this.get('createdTextList').pushObjects(keyObjects);
+      const key = this.createTextObject();
+      this.get('createdTextList').pushObject(key);
       this.resetForm();
     },
     resetClicked() {
