@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
 
+  sqlIndex: 0,
+
   createdTextList: Ember.A(),
 
   /**
@@ -40,7 +42,7 @@ export default Ember.Controller.extend({
     get() {
       let sqlList = Ember.A();
       let createdTextList = this.get('createdTextList');
-      let queryCount = 0;
+      let queryCount = this.get('sqlIndex') || 0;
       createdTextList.forEach(function(textObject) {
 
         let key = `${textObject.base}${textObject.key}`;

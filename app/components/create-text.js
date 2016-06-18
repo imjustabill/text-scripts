@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  sqlIndex: null,
+
   createdTextList: null,
 
   base: null,
