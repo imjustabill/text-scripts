@@ -1,4 +1,4 @@
-{{#if createdTextList}}
+{{#if reversedCreatedTextList}}
   <table class="table table-striped table-condensed margin-bottom padding-bottom">
     <thead>
     <tr>
@@ -10,7 +10,7 @@
     </tr>
     </thead>
     <tbody>
-    {{#each createdTextList as |data|}}
+    {{#each reversedCreatedTextList as |data|}}
       <tr>
         <td><strong>{{data.base}}{{data.key}}</strong></td>
         <td>{{data.text}}</td>
