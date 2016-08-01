@@ -129,7 +129,6 @@ export default Ember.Component.extend({
     this.set('hasRequired', false);
     this.set('requiredErrorText', null);
     this.set('placeholderText', null);
-    this.set('sqlIndex', 0);
   },
 
   actions: {
