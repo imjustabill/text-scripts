@@ -27,7 +27,7 @@
     <tr class="info">
       <td>
       <span>
-        <label>{{input name="placeholder" type="checkbox" checked=hasPlaceholder}} Placeholder Text</label>
+        <label>{{input name="placeholder" type="checkbox" checked=hasPlaceholder}} Placeholder Text (UI)</label>
         {{#if hasPlaceholder}}
           {{#if fullPlaceholderKey}}{{fullPlaceholderKey}}{{/if}}
           {{#if placeholderTextComputed}} = {{placeholderTextComputed}}{{/if}}
@@ -44,7 +44,7 @@
     <tr class="info">
       <td>
       <span>
-        <label>{{input name="required" type="checkbox" checked=hasRequired}} Required Validation</label>
+        <label>{{input name="required" type="checkbox" checked=hasRequired}} Required Validation (UI)</label>
       </span>{{#if hasRequired}}{{requiredKeyDisplay}}{{/if}}
         {{#if hasRequired}}
           {{input name="requiredText" type="text" class="form-control"

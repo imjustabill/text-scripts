@@ -1,4 +1,4 @@
-@import "bootstrap";
+@import "ember-cli-bootstrap-4/bootstrap";
 
 body {
   padding: 10px;
@@ -21,7 +21,7 @@ body {
 }
 
 .table tr th {
-  @extend .text-center;
+  @extend .text-xs-center;
 }
 
 .pre-textarea {
