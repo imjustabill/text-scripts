@@ -72,7 +72,7 @@ export default Ember.Component.extend({
     get() {
       const requiredErrorText = this.get('requiredErrorText');
       const text = this.get('text') || '';
-      return requiredErrorText ? requiredErrorText : text + ' is required.';
+      return requiredErrorText ? requiredErrorText : `${text} is required.`;
     }
   }),
 
@@ -96,7 +96,7 @@ export default Ember.Component.extend({
 
   ticketNumber: '',
 
-  createTextObject: function() {
+  createTextObject() {
     const key = {
       base: this.base || '',
       key: this.key || '',
@@ -122,7 +122,7 @@ export default Ember.Component.extend({
     return key;
   },
 
-  resetForm: function() {
+  resetForm() {
     this.set('key', null);
     this.set('text', null);
     this.set('hasPlaceholder', false);

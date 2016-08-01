@@ -7,8 +7,8 @@ export default Ember.Controller.extend({
   errorList: Ember.A(),
 
   actions: {
-    clearError: function() {
-      let errorList = this.get('errorList');
+    clearError() {
+      const errorList = this.get('errorList');
       errorList.clear();
     }
   }

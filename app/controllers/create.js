@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
     get() {
       const csvList = Ember.A();
       const createdTextList = this.get('createdTextList');
-      createdTextList.forEach(function(textObject) {
+      createdTextList.forEach(textObject => {
         const csv = `"${textObject.base}${textObject.key}","${textObject.text}",""`;
         csvList.pushObject(csv);
         if (textObject.hasRequired) {
@@ -43,7 +43,7 @@ export default Ember.Controller.extend({
       const sqlList = Ember.A();
       const createdTextList = this.get('createdTextList');
       let queryCount = this.get('sqlIndex') || 0;
-      createdTextList.forEach(function(textObject) {
+      createdTextList.forEach(textObject => {
 
         const key = `${textObject.base}${textObject.key}`;
         const sql = `insert into l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
