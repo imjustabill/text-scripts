@@ -69,7 +69,7 @@ export default Ember.Controller.extend({
       });
 
       // need final sql statement to add
-      if (queryCount) {
+      if (queryCount && createdTextList.length) {
         const finalQuery = `update id_seq set id = id+${queryCount} where tbl='l10n_text_resource';`;
         sqlList.pushObject(finalQuery);
       }
