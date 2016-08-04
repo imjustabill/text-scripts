@@ -12,15 +12,15 @@
       </td>
     </tr>
     <tr class="info">
-      <td><label>Base Key*</label> {{input class="form-control" name="baseKey" type="text" value=base
+      <td><label>Base Key (E.G. settings.profile.user.) *</label> {{input class="form-control" name="baseKey" type="text" value=base
       placeholder="Base part of the key that does not reset ( E.G. settings.alerts. )"}}</td>
     </tr>
     <tr class="info">
-      <td><label>Key</label> {{input class="form-control" name="key" type="text" value=key
+      <td><label>Key (E.G. first.name)</label> {{input class="form-control" name="key" type="text" value=key
       placeholder="Enter rest of key name from base ( E.G. email )"}}</td>
     </tr>
     <tr class="info">
-      <td><label>Text*</label> {{#if fullKey}}{{fullKey}}{{/if}} {{#if text}}
+      <td><label>Text *</label> {{#if fullKey}}{{fullKey}}{{/if}} {{#if text}}
         = {{text}}{{/if}} {{input class="form-control" name="text" type="text" value=text placeholder="Enter english text"}}
       </td>
     </tr>
@@ -55,9 +55,9 @@
       </td>
     </tr>
     <tr>
-      <td class="text-center">
+      <td class="text-xs-center">
         <button name="add" type="button" class="btn btn-default btn-primary" {{action 'addClicked'}}>Add</button>
-        <button name="addReset" type="button" class="btn btn-default btn-primary" {{action 'addResetClicked'}}>
+        <button name="addReset" type="button" class="btn btn-default btn-secondary" {{action 'addResetClicked'}}>
           Add/Reset
         </button>
         <button name="reset" type="button" class="btn btn-default btn-link" {{action 'resetClicked'}}>Reset

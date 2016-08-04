@@ -14,10 +14,10 @@
       <tr>
         <td><strong>{{data.base}}{{data.key}}</strong></td>
         <td>{{data.text}}</td>
-        <td class="text-center">{{data.hasPlaceholder}}</td>
-        <td class="text-center">{{data.hasRequired}}</td>
-        <td class="text-right">
-          <button type="button" class="btn btn-default btn-link" {{action 'removeClicked' data}}>Remove</button>
+        <td class="text-xs-center">{{data.hasPlaceholder}}</td>
+        <td class="text-xs-center">{{data.hasRequired}}</td>
+        <td class="text-xs-center">
+          <button type="button" class="btn btn-danger" {{action 'removeClicked' data}}>Remove</button>
         </td>
       </tr>
     {{/each}}
