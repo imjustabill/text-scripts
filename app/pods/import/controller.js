@@ -141,6 +141,12 @@ export default Ember.Controller.extend({
           }
         });
 
+        // need final sql statement to add
+        if (insertQueryCount) {
+          const finalQuery = `update id_seq set id = id+${insertQueryCount} where tbl='l10n_text_resource';`;
+          sqlList.pushObject(finalQuery);
+        }
+
         oldTextMapComputed.forEach((value, key) => {
           if (!newTextMapComputed.has(key)) {
             deleteList.pushObject(`REMOVE,${key},${value}`);
@@ -149,12 +155,6 @@ export default Ember.Controller.extend({
             sqlList.pushObject(sql);
           }
         });
-
-        // need final sql statement to add
-        if (insertQueryCount) {
-          const finalQuery = `update id_seq set id = id+${insertQueryCount} where tbl='l10n_text_resource';`;
-          sqlList.pushObject(finalQuery);
-        }
       }
       return sqlList;
     }
