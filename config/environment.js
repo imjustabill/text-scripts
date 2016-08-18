@@ -1,8 +1,9 @@
 /* jshint node: true */
 
 module.exports = function(environment) {
-  var ENV = {
+  const ENV = {
     modulePrefix: 'text-scripts',
+    podModulePrefix: 'text-scripts/pods',
     environment: environment,
     rootURL: '/',
     locationType: 'auto',

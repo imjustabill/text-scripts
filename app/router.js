@@ -6,7 +6,8 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('create', {path: '/'});
+  this.route('create', { path: '/' });
+  this.route('import', { path: '/import' });
 });
 
 export default Router;

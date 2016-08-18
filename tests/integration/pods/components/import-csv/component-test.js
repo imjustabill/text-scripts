@@ -1,24 +1,23 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
-moduleForComponent('create-text', 'Integration | Component | create text', {
+moduleForComponent('import-csv', 'Integration | Component | import csv', {
   integration: true
 });
 
 test('it renders', function(assert) {
-
   // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
+  // Handle any actions with this.on('myAction', function(val) { ... });
 
-  this.render(hbs`{{create-text}}`);
+  this.render(hbs`{{import-csv}}`);
 
   assert.equal(this.$().text().trim(), '');
 
-  // Template block usage:" + EOL +
+  // Template block usage:
   this.render(hbs`
-    {{#create-text}}
+    {{#import-csv}}
       template block text
-    {{/create-text}}
+    {{/import-csv}}
   `);
 
   assert.equal(this.$().text().trim(), 'template block text');

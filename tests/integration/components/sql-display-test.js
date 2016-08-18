@@ -6,12 +6,12 @@ moduleForComponent('sql-display', 'Integration | Component | sql display', {
 });
 
 test('it renders', function(assert) {
-  
+
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });" + EOL + EOL +
 
   this.render(hbs`{{sql-display}}`);
-
+  console.log('assert', assert);
   assert.equal(this.$().text().trim(), '');
 
   // Template block usage:" + EOL +
