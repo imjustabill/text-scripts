@@ -47,13 +47,13 @@ export default Ember.Controller.extend({
 
         const key = `${textObject.base}${textObject.key}`;
         const sql = `insert into l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-  values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${textObject.text}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));`;
+  values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${textObject.text.replace(/'/g, "''")}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));`;
         sqlList.pushObject(sql);
         queryCount++;
         if (textObject.hasRequired) {
           const requiredKeyName = `${textObject.base}${textObject.requiredPrefix}${textObject.key}${textObject.requiredSuffix}`;
           const csvRequired = `insert into l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-  values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${requiredKeyName}', '${textObject.requiredErrorText}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));`;
+  values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${requiredKeyName}', '${textObject.requiredErrorText.replace(/'/g, "''")}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));`;
 
           sqlList.pushObject(csvRequired);
           queryCount++;
@@ -61,7 +61,7 @@ export default Ember.Controller.extend({
         if (textObject.hasPlaceholder) {
           const placeholderKeyname = `${textObject.base}${textObject.key}${textObject.placeholderSuffix}`;
           const csvPlaceholder = `insert into l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-  values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${placeholderKeyname}', '${textObject.placeholderText}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));`;
+  values ((select id+${queryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${placeholderKeyname}', '${textObject.placeholderText.replace(/'/g, "''")}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));`;
 
           sqlList.pushObject(csvPlaceholder);
           queryCount++;

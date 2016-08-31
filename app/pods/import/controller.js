@@ -8,19 +8,20 @@ export default Ember.Controller.extend({
 
   ticketNumber: null,
 
-   oldText: '',
-   newText: '',
+   //oldText: '',
+   //newText: '',
 
-//  oldText: `# This is my comment that shouldn't matter
-//  "settings.alerts.btn.cancel","Cancel",""
-//"same","Same",""
-//"update","oldnews"`,
+  oldText: `# This is my comment that shouldn't matter
+  "settings.alerts.btn.cancel","Cancel",""
+"same","Same",""
+"update","update"`,
 
-//  newText: `"settings.alerts.btn.save","Save",""
-//  # Here is another comment
-//"settings.alerts.btn.save2","Save2",""
-//"same","Same",""
-//"update","updated!",""`,
+  newText: `"settings.alerts.btn.save","Save",""
+  # Here is another comment
+"settings.alerts.btn.save2","Save2",""
+"same","Same",""
+"update","updated!",""
+"apostrophe check","apost'rophe",""`,
 
   oldTextMapComputed: Ember.computed('oldText', {
     get() {
@@ -121,7 +122,7 @@ export default Ember.Controller.extend({
           if (oldValue === undefined) {
             addList.pushObject(`ADD,${key},${value}`);
             const sql = `INSERT INTO l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-      VALUES ((select id+${insertQueryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${value}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));\n`;
+      VALUES ((select id+${insertQueryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${value.replace(/'/g, "''")}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));\n`;
             sqlList.pushObject(sql);
             insertQueryCount++;
           } else if (oldValue === value) {
@@ -132,7 +133,7 @@ export default Ember.Controller.extend({
             updateList.pushObject(`UPDATE,${key},${value}`);
             console.log('UPDATE', key, value, oldValue);
             const sql = `UPDATE l10n_text_resource
-      SET local_value = '${value}', modified_by = '${ticketNumber}', updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
+      SET local_value = '${value.replace(/'/g, "''")}', modified_by = '${ticketNumber}', updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
       WHERE name = '${key}' AND locale_id = (select id from l10n_locale where language_code = 'en');\n`;
             sqlList.pushObject(sql);
           } else {
