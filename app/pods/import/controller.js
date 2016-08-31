@@ -8,20 +8,23 @@ export default Ember.Controller.extend({
 
   ticketNumber: null,
 
-   //oldText: '',
-   //newText: '',
+  oldText: '',
+  newText: '',
 
-  oldText: `# This is my comment that shouldn't matter
-  "settings.alerts.btn.cancel","Cancel",""
-"same","Same",""
-"update","update"`,
+//  oldText: `# This is my comment that shouldn't matter
+//  "settings.alerts.btn.cancel","Cancel",""
+//"same","Same",""
+//"update","update"
+//"doublequote","double\\"",""`,
 
-  newText: `"settings.alerts.btn.save","Save",""
-  # Here is another comment
-"settings.alerts.btn.save2","Save2",""
-"same","Same",""
-"update","updated!",""
-"apostrophe check","apost'rophe",""`,
+//  newText: `"settings.alerts.btn.save","Save",""
+//  # Here is another comment
+//"settings.alerts.btn.save2","Save2",""
+//"same","Same",""
+//"update","updated!",""
+//"apostrophe check","apost'rophe",""
+//"doublequote","double\\"update",""
+//"boringkey","double\\"insert",""`,
 
   oldTextMapComputed: Ember.computed('oldText', {
     get() {
@@ -32,14 +35,12 @@ export default Ember.Controller.extend({
       oldText.split('\n').forEach(line => {
         const trimmedLine = line.trim();
         if (trimmedLine.indexOf(',') > -1 && trimmedLine.indexOf('#') !== 0) {
-          const valuesArray = trimmedLine.split(',');
+          const valuesArray = trimmedLine.split('","');
           let key;
           let value;
           if (valuesArray.length > 1 && valuesArray[0].length > 2) {
-            key = valuesArray[0].trim();
-            value = valuesArray[1].trim();
-            key = key.substring(key.indexOf('"') + 1, key.lastIndexOf(('"')));
-            value = valuesArray[1].substring(value.indexOf('"') + 1, value.lastIndexOf('"'));
+            key = valuesArray[0].substring(valuesArray[0].indexOf('"') + 1).trim();
+            value = valuesArray[1].replace(/\\"/g, '"').trim();
           }
 
           if (key) {
@@ -59,14 +60,12 @@ export default Ember.Controller.extend({
       newText.split('\n').forEach(line => {
         const trimmedLine = line.trim();
         if (trimmedLine.indexOf(',') > -1 && trimmedLine.indexOf('#') !== 0) {
-          const valuesArray = trimmedLine.split(',');
+          const valuesArray = trimmedLine.split('","');
           let key;
           let value;
           if (valuesArray.length > 1 && valuesArray[0].length > 2) {
-            key = valuesArray[0].trim();
-            value = valuesArray[1].trim();
-            key = key.substring(key.indexOf('"') + 1, key.lastIndexOf(('"')));
-            value = valuesArray[1].substring(value.indexOf('"') + 1, value.lastIndexOf('"'));
+            key = valuesArray[0].substring(valuesArray[0].indexOf('"') + 1).trim();
+            value = valuesArray[1].replace(/\\"/g, '"').trim();
           }
 
           if (key) {
@@ -127,11 +126,9 @@ export default Ember.Controller.extend({
             insertQueryCount++;
           } else if (oldValue === value) {
             // do nothing
-            console.log('DUPLICATE', key, value, oldValue);
             sameList.pushObject(`SAME,${key},${oldValue}`);
           } else if (isUpdateAllowed) {
             updateList.pushObject(`UPDATE,${key},${value}`);
-            console.log('UPDATE', key, value, oldValue);
             const sql = `UPDATE l10n_text_resource
       SET local_value = '${value.replace(/'/g, "''")}', modified_by = '${ticketNumber}', updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
       WHERE name = '${key}' AND locale_id = (select id from l10n_locale where language_code = 'en');\n`;
@@ -151,7 +148,6 @@ export default Ember.Controller.extend({
         oldTextMapComputed.forEach((value, key) => {
           if (!newTextMapComputed.has(key)) {
             deleteList.pushObject(`REMOVE,${key},${value}`);
-            console.log('DELETE', key, value);
             const sql = `DELETE FROM l10n_text_resource WHERE name = '${key}';`;
             sqlList.pushObject(sql);
           }

@@ -16,16 +16,17 @@ export default Ember.Controller.extend({
       const csvList = Ember.A();
       const createdTextList = this.get('createdTextList');
       createdTextList.forEach(textObject => {
-        const csv = `"${textObject.base}${textObject.key}","${textObject.text}",""`;
+        const key = `${textObject.base}${textObject.key}`;
+        const csv = `"${key.replace(/"/g, '\\"')}","${textObject.text.replace(/"/g, '\\"')}",""`;
         csvList.pushObject(csv);
         if (textObject.hasRequired) {
           const keyName = `${textObject.base}${textObject.requiredPrefix}${textObject.key}${textObject.requiredSuffix}`;
-          const csvRequired = `"${keyName}","${textObject.requiredErrorText}",""`;
+          const csvRequired = `"${keyName.replace(/"/g, '\\"')}","${textObject.requiredErrorText.replace(/"/g, '\\"')}",""`;
           csvList.pushObject(csvRequired);
         }
         if (textObject.hasPlaceholder) {
           const placeholderKeyname = `${textObject.base}${textObject.key}${textObject.placeholderSuffix}`;
-          const csvPlaceholder = `"${placeholderKeyname}","${textObject.placeholderText}",""`;
+          const csvPlaceholder = `"${placeholderKeyname.replace(/"/g, '\\"')}","${textObject.placeholderText.replace(/"/g, '\\"')}",""`;
           csvList.pushObject(csvPlaceholder);
         }
       });
