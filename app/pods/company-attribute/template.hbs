@@ -1,0 +1,163 @@
+<form {{action "noop" on="submit"}}>
+
+  <div class="form-group">
+    <label>Ticket
+      #</label> {{input class="form-control" name="ticketNumber" type="text" placeholder="Ticket Number ( E.G. DDB-1234 )" value=ticketNumber autofocus="autofocus"}}
+  </div>
+
+  <div class="form-group">
+    <label>ID
+      (Key)</label> {{input class="form-control" name="id" type="text" placeholder="E.G. dashboard.plan.mobile.enabled" value=id}}
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+      {{input class="form-check-input" name="hasParent" type="checkbox" checked=hasParent}}
+      Has parent company attribute?
+    </label>
+  </div>
+
+  {{#if hasParent}}
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <div class="form-group">
+          <label>Parent
+            ID</label> {{input class="form-control" name="parent" type="text" placeholder="ID of parent if exists - used for hiearchy (indents)" value=parent}}
+        </div>
+
+        <div class="form-group">
+          <label>Parent Value Required for
+            Visibility</label> {{input class="form-control" name="parentValueForVisibility" type="text" placeholder="Value on Parent to show child (this) in Control" value=parentValueForVisibility}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="form-group">
+    <label>Title (Control Label)</label>
+    {{input class="form-control" name="title" type="text" value=title placeholder="E.G. Dashboard"}}
+  </div>
+
+  <div class="form-group">
+    <label>Description</label>
+    {{input class="form-control" name="description" type="text" value=description}}
+  </div>
+
+  <div class="form-group">
+    <label>Value Type</label>
+    <select onchange={{action "selectValueType" value="target.value"}}>
+      {{#each valueTypes as |valueTypeChoice|}}
+        <option value={{valueTypeChoice}} selected={{eq valueType valueTypeChoice}}>{{valueTypeChoice}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  {{available-values availableValuesList=availableValuesList hasAvailableValues=hasAvailableValues}}
+
+  <div class="form-group">
+    <label>Default Value</label>
+    {{input class="form-control" name="defaultValue" type="text" value=defaultValue}}
+  </div>
+
+  <div class="form-group">
+    <label>Definition Type</label>
+    <select onchange={{action "selectDefinitionType" value="target.value"}}>
+      {{#each definitionTypes as |definitionTypeChoice|}}
+        <option
+          value={{definitionTypeChoice}} selected={{eq definitionType definitionTypeChoice}}>{{definitionTypeChoice}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Display Order (Reverse Weight)</label>
+    {{input class="form-control" name="displayOrder" type="number" value=displayOrder placeholder="E.G. 150"}}
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+      {{input class="form-check-input" name="isDisplayable" type="checkbox" checked=isDisplayable}}
+      Is Company Attribute Displayable in Control?
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+      {{input class="form-check-input" name="isSystemOwnerOnly" type="checkbox" checked=isSystemOwnerOnly}}
+      Is Company Attribute Displayable For System Owner Only in Control?
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>Group Name</label>
+    <select onchange={{action "selectGroupName" value="target.value"}}>
+      {{#each groupNames as |groupNameChoice|}}
+        <option
+          value={{groupNameChoice}} selected={{eq groupName groupNameChoice}}>{{groupNameChoice}}</option>
+      {{/each}}
+    </select>
+    {{input class="form-control" name="groupName" type="text" value=groupName placeholder="Use Dropdown for existing values"}}
+  </div>
+
+  <div class="form-group">
+    <label>Section Name</label>
+    <select onchange={{action "selectSectionName" value="target.value"}}>
+      {{#each sectionNames as |sectionNameChoice|}}
+        <option
+          value={{sectionNameChoice}} selected={{eq sectionName sectionNameChoice}}>{{sectionNameChoice}}</option>
+      {{/each}}
+    </select>
+    {{input class="form-control" name="sectionName" type="text" value=sectionName placeholder="Use Dropdown for existing values"}}
+  </div>
+
+  <div class="form-group">
+    <label>Unique Type</label>
+    {{input class="form-control" name="uniqueType" type="text" value=uniqueType}}
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+      {{input class="form-check-input" name="hasValidation" type="checkbox" checked=hasValidation}}
+      Has Validation Requirement?
+    </label>
+  </div>
+
+  {{#if hasValidation}}
+    <div class="jumbotron jumbotron-fluid">
+      <div class="container">
+        <div class="form-group">
+          <label>Validation Pattern</label>
+          <select onchange={{action "selectValidationPattern" value="target.value"}}>
+            {{#each validationPatterns as |validationPatternChoice|}}
+              <option
+                value={{validationPatternChoice}} selected={{eq validationPattern validationPatternChoice}}>{{validationPatternChoice}}</option>
+            {{/each}}
+          </select>
+          {{input class="form-control" name="validationPattern" type="text" value=validationPattern placeholder="Use Dropdown for existing values"}}
+        </div>
+
+        <div class="form-group">
+          <label>Validation Minimum</label>
+          {{input class="form-control" name="validationMin" type="text" value=validationMin}}
+        </div>
+
+        <div class="form-group">
+          <label>Validation Maximum</label>
+          {{input class="form-control" name="validationMax" type="text" value=validationMax}}
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="form-group">
+    <h4>Definitions JSON (NOT STARTED YET!)</h4>
+  </div>
+
+  <div class="form-group">
+    <h4>SQL (NOT STARTED YET!)</h4>
+  </div>
+
+  <!--{{sql-display sqlList=sqlList}}-->
+
+
+</form>
