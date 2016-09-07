@@ -45,7 +45,7 @@
 
   <div class="form-group">
     <label>Value Type</label>
-    <select onchange={{action "selectValueType" value="target.value"}}>
+    <select class="form-control" onchange={{action "selectValueType" value="target.value"}}>
       {{#each valueTypes as |valueTypeChoice|}}
         <option value={{valueTypeChoice}} selected={{eq valueType valueTypeChoice}}>{{valueTypeChoice}}</option>
       {{/each}}
@@ -61,7 +61,7 @@
 
   <div class="form-group">
     <label>Definition Type</label>
-    <select onchange={{action "selectDefinitionType" value="target.value"}}>
+    <select class="form-control" onchange={{action "selectDefinitionType" value="target.value"}}>
       {{#each definitionTypes as |definitionTypeChoice|}}
         <option
           value={{definitionTypeChoice}} selected={{eq definitionType definitionTypeChoice}}>{{definitionTypeChoice}}</option>
@@ -90,7 +90,7 @@
 
   <div class="form-group">
     <label>Group Name</label>
-    <select onchange={{action "selectGroupName" value="target.value"}}>
+    <select class="form-control" onchange={{action "selectGroupName" value="target.value"}}>
       {{#each groupNames as |groupNameChoice|}}
         <option
           value={{groupNameChoice}} selected={{eq groupName groupNameChoice}}>{{groupNameChoice}}</option>
@@ -101,7 +101,7 @@
 
   <div class="form-group">
     <label>Section Name</label>
-    <select onchange={{action "selectSectionName" value="target.value"}}>
+    <select class="form-control" onchange={{action "selectSectionName" value="target.value"}}>
       {{#each sectionNames as |sectionNameChoice|}}
         <option
           value={{sectionNameChoice}} selected={{eq sectionName sectionNameChoice}}>{{sectionNameChoice}}</option>
@@ -127,7 +127,7 @@
       <div class="container">
         <div class="form-group">
           <label>Validation Pattern</label>
-          <select onchange={{action "selectValidationPattern" value="target.value"}}>
+          <select class="form-control" onchange={{action "selectValidationPattern" value="target.value"}}>
             {{#each validationPatterns as |validationPatternChoice|}}
               <option
                 value={{validationPatternChoice}} selected={{eq validationPattern validationPatternChoice}}>{{validationPatternChoice}}</option>
