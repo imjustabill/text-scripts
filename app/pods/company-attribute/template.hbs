@@ -152,7 +152,7 @@
         <option value={{uniqueTypeChoice}} selected={{eq uniqueType uniqueTypeChoice}}>{{uniqueTypeChoice}}</option>
       {{/each}}
     </select>
-    {{input class="form-control" name="uniqueValue" type="text" value=uniqueValue placeholder="Use Dropdown for existing values"}}
+    {{input class="form-control" name="uniqueType" type="text" value=uniqueType placeholder="Use Dropdown for existing values"}}
   </div>
 
   <div class="form-group">
@@ -164,6 +164,5 @@
   </div>
 
   <!--{{sql-display sqlList=sqlList}}-->
-
 
 </form>
