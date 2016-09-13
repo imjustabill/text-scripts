@@ -34,6 +34,29 @@
   {{/if}}
 
   <div class="form-group">
+    <label>Group Name</label>
+    <select class="form-control" onchange={{action "selectGroupName" value="target.value"}}>
+      {{#each groupNames as |groupNameChoice|}}
+        <option
+          value={{groupNameChoice}} selected={{eq groupName groupNameChoice}}>{{groupNameChoice}}</option>
+      {{/each}}
+    </select>
+    {{input class="form-control" name="groupName" type="text" value=groupName placeholder="Use Dropdown for existing values"}}
+  </div>
+
+  <div class="form-group">
+    <label>Section Name</label>
+    <select class="form-control" onchange={{action "selectSectionName" value="target.value"}}>
+      {{#each sectionNames as |sectionNameChoice|}}
+        <option
+          value={{sectionNameChoice}} selected={{eq sectionName sectionNameChoice}}>{{sectionNameChoice}}</option>
+      {{/each}}
+    </select>
+    {{input class="form-control" name="sectionName" type="text" value=sectionName placeholder="Use Dropdown for existing values"}}
+  </div>
+
+
+  <div class="form-group">
     <label>Title (Control Label)</label>
     {{input class="form-control" name="title" type="text" value=title placeholder="E.G. Dashboard"}}
   </div>
@@ -60,62 +83,6 @@
   </div>
 
   <div class="form-group">
-    <label>Definition Type</label>
-    <select class="form-control" onchange={{action "selectDefinitionType" value="target.value"}}>
-      {{#each definitionTypes as |definitionTypeChoice|}}
-        <option
-          value={{definitionTypeChoice}} selected={{eq definitionType definitionTypeChoice}}>{{definitionTypeChoice}}</option>
-      {{/each}}
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Display Order (Reverse Weight)</label>
-    {{input class="form-control" name="displayOrder" type="number" value=displayOrder placeholder="E.G. 150"}}
-  </div>
-
-  <div class="form-group">
-    <label class="form-check-label">
-      {{input class="form-check-input" name="isDisplayable" type="checkbox" checked=isDisplayable}}
-      Is Company Attribute Displayable in Control?
-    </label>
-  </div>
-
-  <div class="form-group">
-    <label class="form-check-label">
-      {{input class="form-check-input" name="isSystemOwnerOnly" type="checkbox" checked=isSystemOwnerOnly}}
-      Is Company Attribute Displayable For System Owner Only in Control?
-    </label>
-  </div>
-
-  <div class="form-group">
-    <label>Group Name</label>
-    <select class="form-control" onchange={{action "selectGroupName" value="target.value"}}>
-      {{#each groupNames as |groupNameChoice|}}
-        <option
-          value={{groupNameChoice}} selected={{eq groupName groupNameChoice}}>{{groupNameChoice}}</option>
-      {{/each}}
-    </select>
-    {{input class="form-control" name="groupName" type="text" value=groupName placeholder="Use Dropdown for existing values"}}
-  </div>
-
-  <div class="form-group">
-    <label>Section Name</label>
-    <select class="form-control" onchange={{action "selectSectionName" value="target.value"}}>
-      {{#each sectionNames as |sectionNameChoice|}}
-        <option
-          value={{sectionNameChoice}} selected={{eq sectionName sectionNameChoice}}>{{sectionNameChoice}}</option>
-      {{/each}}
-    </select>
-    {{input class="form-control" name="sectionName" type="text" value=sectionName placeholder="Use Dropdown for existing values"}}
-  </div>
-
-  <div class="form-group">
-    <label>Unique Type</label>
-    {{input class="form-control" name="uniqueType" type="text" value=uniqueType}}
-  </div>
-
-  <div class="form-group">
     <label class="form-check-label">
       {{input class="form-check-input" name="hasValidation" type="checkbox" checked=hasValidation}}
       Has Validation Requirement?
@@ -138,16 +105,55 @@
 
         <div class="form-group">
           <label>Validation Minimum</label>
-          {{input class="form-control" name="validationMin" type="text" value=validationMin}}
+          {{input class="form-control" name="validationMin" type="text" value=validationMin placeHolder="E.G. 1 / 0.00 / 8:00"}}
         </div>
 
         <div class="form-group">
           <label>Validation Maximum</label>
-          {{input class="form-control" name="validationMax" type="text" value=validationMax}}
+          {{input class="form-control" name="validationMax" type="text" value=validationMax placeHolder="E.G. 100 / 100.00 / 10:00"}}
         </div>
       </div>
     </div>
   {{/if}}
+
+  <div class="form-group">
+    <label>Definition Type</label>
+    <select class="form-control" onchange={{action "selectDefinitionType" value="target.value"}}>
+      {{#each definitionTypes as |definitionTypeChoice|}}
+        <option
+          value={{definitionTypeChoice}} selected={{eq definitionType definitionTypeChoice}}>{{definitionTypeChoice}}</option>
+      {{/each}}
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Display Order (Reverse Weight)</label>
+    {{input class="form-control" name="displayOrder" type="number" value=displayOrder placeholder="E.G. 150"}}
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+      {{input class="form-check-input" name="isDisplayable" type="checkbox" checked=isDisplayable}}
+      Should this attribute be exposed to the Banking UI App (retrieved on startup)?
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label class="form-check-label">
+      {{input class="form-check-input" name="isSystemOwnerOnly" type="checkbox" checked=isSystemOwnerOnly}}
+      Is Company Attribute Displayable for 'System Owner Only' in Control?
+    </label>
+  </div>
+
+  <div class="form-group">
+    <label>Unique Type</label>
+    <select class="form-control" onchange={{action "selectUniqueType" value="target.value"}}>
+      {{#each uniqueTypes as |uniqueTypeChoice|}}
+        <option value={{uniqueTypeChoice}} selected={{eq uniqueType uniqueTypeChoice}}>{{uniqueTypeChoice}}</option>
+      {{/each}}
+    </select>
+    {{input class="form-control" name="uniqueValue" type="text" value=uniqueValue placeholder="Use Dropdown for existing values"}}
+  </div>
 
   <div class="form-group">
     <h4>Definitions JSON (NOT STARTED YET!)</h4>
