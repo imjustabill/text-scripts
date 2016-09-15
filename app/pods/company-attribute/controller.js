@@ -56,7 +56,7 @@ export default Ember.Controller.extend({
   validationMax: null,
 
   jsonDefinition: Ember.computed('id', 'parent', 'parentValueForVisibility', 'title', 'description', 'valueType',
-    'availableValuesList.[]', 'isAvailableValuesEnabled', 'defaultValue', 'definitionType', 'displayOrder', 'isDisplayable', 'isSystemOwnerOnly',
+    'availableValuesList.[]', 'defaultValue', 'definitionType', 'displayOrder', 'isDisplayable', 'isSystemOwnerOnly',
     'groupName', 'sectionName', 'uniqueType', 'validationPattern', 'validationMin', 'validationMax', {
       get() {
         const id = this.get('id');
@@ -66,7 +66,6 @@ export default Ember.Controller.extend({
         const description = this.get('description');
         const valueType = this.get('valueType');
         const availableValuesList = this.get('availableValuesList');
-        const isAvailableValuesEnabled = this.get('isAvailableValuesEnabled');
         const defaultValue = this.get('defaultValue');
         const definitionType = this.get('definitionType');
         const displayOrder = this.get('displayOrder');
@@ -108,30 +107,57 @@ export default Ember.Controller.extend({
     get() {
       const jsonDefinition = this.get('jsonDefinition');
       console.log('here is the string version', JSON.stringify(jsonDefinition));
-      return JSON.stringify(jsonDefinition, null, 2);
+      return JSON.stringify(jsonDefinition,
+        (key, value) => {
+          if ((Array.isArray(value) && !value.length)) {
+            return null;
+          } else if (typeof value === 'string') {
+            return value.replace(/"/g, '\\"');
+          }
+          return value;
+        },
+        2
+      );
     }
   }),
 
   sqlDisplayString: Ember.computed('jsonDefinition', 'ticketNumber', {
     get() {
-      const jsonDefinition = this.get('jsonDefinition');
       const ticketNumber = this.get('ticketNumber');
+      const originalJsonDefinition = this.get('jsonDefinition');
+
+      const jsonString = JSON.stringify(originalJsonDefinition,
+        (key, value) => {
+          console.log('key value', key, value, typeof value);
+          if (typeof value === 'string') {
+            console.log('wrapper', `'${value.replace(/'/g, "\'\'")}'`);
+            return `'${value.replace(/'/g, "\'\'")}'`;
+          }
+          console.log('booleans');
+          return value;
+        },
+        2
+      );
+      console.log('jsonString', jsonString);
+      const jsonDefinition = JSON.parse(jsonString);
+      console.log('jsonDefinition for sql', jsonDefinition);
       let sqlDisplayString;
 
+      console.log('UNIQUE!', jsonDefinition.uniqueType);
       // TODO NULL vs string input needs a wrapper or condition (extra property or run through a function)
       sqlDisplayString = `INSERT INTO company_attribute_definition (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,parent_name,name,group_name,section_name,title,description,display_order,is_displayable,system_owner_only,validation_pattern,validation_min,validation_max,value_type,definition_type,unique_type,parent_value_for_visibility)
-  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,'${jsonDefinition.parent}','${jsonDefinition.id}','${jsonDefinition.groupName}','${jsonDefinition.sectionName}','${jsonDefinition.title}','${jsonDefinition.description}',${jsonDefinition.displayOrder},${jsonDefinition.isDisplayable ? '1' : '0'},${jsonDefinition.isSystemOwnerOnly ? '1' : '0'},${jsonDefinition.validationPattern},${jsonDefinition.validationMin},${jsonDefinition.validationMax},'${jsonDefinition.valueType}','${jsonDefinition.definitionType}','${jsonDefinition.uniqueType}','${jsonDefinition.parentValueForVisibility}');`;
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,${jsonDefinition.parent},${jsonDefinition.id},${jsonDefinition.groupName},${jsonDefinition.sectionName},${jsonDefinition.title},${jsonDefinition.description},${jsonDefinition.displayOrder},${jsonDefinition.isDisplayable ? '1' : '0'},${jsonDefinition.isSystemOwnerOnly ? '1' : '0'},${jsonDefinition.validationPattern},${jsonDefinition.validationMin},${jsonDefinition.validationMax},${jsonDefinition.valueType},${jsonDefinition.definitionType},${jsonDefinition.uniqueType},${jsonDefinition.parentValueForVisibility});`;
 
       // loop through available values
       if (jsonDefinition.availableValuesList) {
         jsonDefinition.availableValuesList.forEach(availableValue => {
           sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute_values (definition_id,name,description)
-  VALUES (${jsonDefinition.id},'${availableValue.availableKey}','${availableValue.availableValue}');`;
+  VALUES (${jsonDefinition.id},${availableValue.availableKey},${availableValue.availableValue});`;
         });
       }
 
       sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,id,value_string,company_id,definition)
-  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id+0 FROM id_seq WHERE tbl='company_attribute'),'${jsonDefinition.defaultValue}',(SELECT id FROM company WHERE source_company_id = 'ROOT'),'${jsonDefinition.id}');`;
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id+0 FROM id_seq WHERE tbl='company_attribute'),${jsonDefinition.defaultValue},(SELECT id FROM company WHERE source_company_id = 'ROOT'),${jsonDefinition.id});`;
       sqlDisplayString = `${sqlDisplayString}\nUPDATE id_seq SET id=id+1 WHERE tbl='company_attribute';\n`;
 
       console.log('here is the sql output', sqlDisplayString);
