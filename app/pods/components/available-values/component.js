@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
 
   availableValuesList: null,
-  hasAvailableValues: null,
+  isAvailableValuesEnabled: true,
 
   availableKey: null,
   availableValue: null,

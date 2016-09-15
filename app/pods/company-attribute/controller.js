@@ -15,10 +15,12 @@ export default Ember.Controller.extend({
 
   title: null,
 
+  description: null,
+
   valueType: null,
   valueTypes: Ember.A(['BIG_DECIMAL', 'BIG_INTEGER', 'BOOLEAN', 'BYTE', 'DATE', 'DATE_ONLY', 'DATE_TIME', 'DECIMAL', 'DOUBLE', 'DURATION', 'EXPRESSION', 'FLOAT', 'IMAGE_NAME', 'INTEGER', 'LONG', 'MONEY', 'OBSCURED', 'PERCENT', 'RESOURCE', 'SHORT', 'STORED_CONTENT', 'STRING', 'TIME_ONLY', 'URL']),
   availableValuesList: Ember.A(),
-  hasAvailableValues: Ember.computed('valueType', {
+  isAvailableValuesEnabled: Ember.computed('valueType', {
     get() {
       const valueType = this.get('valueType');
       return valueType === 'STRING';
@@ -53,29 +55,107 @@ export default Ember.Controller.extend({
 
   validationMax: null,
 
+  jsonDefinition: Ember.computed('id', 'parent', 'parentValueForVisibility', 'title', 'description', 'valueType',
+    'availableValuesList.[]', 'isAvailableValuesEnabled', 'defaultValue', 'definitionType', 'displayOrder', 'isDisplayable', 'isSystemOwnerOnly',
+    'groupName', 'sectionName', 'uniqueType', 'validationPattern', 'validationMin', 'validationMax', {
+      get() {
+        const id = this.get('id');
+        const parent = this.get('parent');
+        const parentValueForVisibility = this.get('parentValueForVisibility');
+        const title = this.get('title');
+        const description = this.get('description');
+        const valueType = this.get('valueType');
+        const availableValuesList = this.get('availableValuesList');
+        const isAvailableValuesEnabled = this.get('isAvailableValuesEnabled');
+        const defaultValue = this.get('defaultValue');
+        const definitionType = this.get('definitionType');
+        const displayOrder = this.get('displayOrder');
+        const isDisplayable = this.get('isDisplayable');
+        const isSystemOwnerOnly = this.get('isSystemOwnerOnly');
+        const groupName = this.get('groupName');
+        const sectionName = this.get('sectionName');
+        const uniqueType = this.get('uniqueType');
+        const validationPattern = this.get('validationPattern');
+        const validationMin = this.get('validationMin');
+        const validationMax = this.get('validationMax');
+        let jsonDefinition = {
+          id,
+          groupName,
+          sectionName,
+          title,
+          description,
+          valueType,
+          displayOrder,
+          displayable: isDisplayable,
+          systemOwnerOnly: isSystemOwnerOnly,
+          parentValueForVisibility,
+          availableValues: availableValuesList,
+          validationPattern,
+          validationMin,
+          validationMax,
+          definitionType,
+          uniqueType,
+          parent,
+          defaultValue
+        };
+
+        console.log('here is the json definition object', jsonDefinition);
+        return jsonDefinition;
+      }
+    }),
+
+  jsonDefinitionString: Ember.computed('jsonDefinition', {
+    get() {
+      const jsonDefinition = this.get('jsonDefinition');
+      console.log('here is the string version', JSON.stringify(jsonDefinition));
+      return JSON.stringify(jsonDefinition, null, 2);
+    }
+  }),
+
+  sqlDisplayString: Ember.computed('jsonDefinition', 'ticketNumber', {
+    get() {
+      const jsonDefinition = this.get('jsonDefinition');
+      const ticketNumber = this.get('ticketNumber');
+      let sqlDisplayString;
+
+      // TODO NULL vs string input needs a wrapper or condition (extra property or run through a function)
+      sqlDisplayString = `INSERT INTO company_attribute_definition (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,parent_name,name,group_name,section_name,title,description,display_order,is_displayable,system_owner_only,validation_pattern,validation_min,validation_max,value_type,definition_type,unique_type,parent_value_for_visibility)
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,'${jsonDefinition.parent}','${jsonDefinition.id}','${jsonDefinition.groupName}','${jsonDefinition.sectionName}','${jsonDefinition.title}','${jsonDefinition.description}',${jsonDefinition.displayOrder},${jsonDefinition.isDisplayable ? '1' : '0'},${jsonDefinition.isSystemOwnerOnly ? '1' : '0'},${jsonDefinition.validationPattern},${jsonDefinition.validationMin},${jsonDefinition.validationMax},'${jsonDefinition.valueType}','${jsonDefinition.definitionType}','${jsonDefinition.uniqueType}','${jsonDefinition.parentValueForVisibility}');`;
+
+      // loop through available values
+      if (jsonDefinition.availableValuesList) {
+        jsonDefinition.availableValuesList.forEach(availableValue => {
+          sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute_values (definition_id,name,description)
+  VALUES (${jsonDefinition.id},'${availableValue.availableKey}','${availableValue.availableValue}');`;
+        });
+      }
+
+      sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,id,value_string,company_id,definition)
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id+0 FROM id_seq WHERE tbl='company_attribute'),'${jsonDefinition.defaultValue}',(SELECT id FROM company WHERE source_company_id = 'ROOT'),'${jsonDefinition.id}');`;
+      sqlDisplayString = `${sqlDisplayString}\nUPDATE id_seq SET id=id+1 WHERE tbl='company_attribute';\n`;
+
+      console.log('here is the sql output', sqlDisplayString);
+      return sqlDisplayString;
+    }
+  }),
+
   actions: {
-    selectValueType(valueType)
-    {
+    selectValueType(valueType) {
       this.set('valueType', valueType);
     },
-    selectDefinitionType(definitionType)
-    {
+    selectDefinitionType(definitionType) {
       this.set('definitionType', definitionType);
     },
-    selectGroupName(groupName)
-    {
+    selectGroupName(groupName) {
       this.set('groupName', groupName);
     },
-    selectSectionName(selectionName)
-    {
+    selectSectionName(selectionName) {
       this.set('selectionName', selectionName);
     },
-    selectValidationPattern(validationPattern)
-    {
+    selectValidationPattern(validationPattern){
       this.set('validationPattern', validationPattern);
     },
-    selectUniqueType(uniqueType)
-    {
+    selectUniqueType(uniqueType) {
       this.set('uniqueType', uniqueType);
     }
   }

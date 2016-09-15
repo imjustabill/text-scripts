@@ -8,6 +8,8 @@ export default Ember.Controller.extend({
 
   ticketNumber: null,
 
+  bundleType: 'ui',
+
   oldText: '',
   newText: '',
 
@@ -16,7 +18,7 @@ export default Ember.Controller.extend({
 //"same","Same",""
 //"update","update"
 //"doublequote","double\\"",""`,
-
+//
 //  newText: `"settings.alerts.btn.save","Save",""
 //  # Here is another comment
 //"settings.alerts.btn.save2","Save2",""
@@ -94,12 +96,13 @@ export default Ember.Controller.extend({
     }
   }),
 
-  sqlList: Ember.computed('oldTextMapComputed.[]', 'newTextMapComputed.[]', 'insertQueryCount', 'isUpdateAllowed', 'ticketNumber', {
+  sqlList: Ember.computed('oldTextMapComputed.[]', 'newTextMapComputed.[]', 'insertQueryCount', 'isUpdateAllowed', 'ticketNumber', 'bundleType', {
     get() {
       const addList = this.get('addList');
       const updateList = this.get('updateList');
       const deleteList = this.get('deleteList');
       const sameList = this.get('sameList');
+      const bundleType = this.get('bundleType');
 
       addList.clear();
       updateList.clear();
@@ -110,7 +113,9 @@ export default Ember.Controller.extend({
       const oldTextMapComputed = this.get('oldTextMapComputed');
       const isUpdateAllowed = this.get('isUpdateAllowed');
       const ticketNumber = this.get('ticketNumber');
-      const sqlList = Ember.A();
+      const deleteSqlList = Ember.A();
+      const insertSqlList = Ember.A();
+      const updateSqlList = Ember.A();
 
       if (newTextMapComputed.size > 0 || oldTextMapComputed.size > 0) {
         let insertQueryCount = this.get('insertQueryCount');
@@ -121,8 +126,8 @@ export default Ember.Controller.extend({
           if (oldValue === undefined) {
             addList.pushObject(`ADD,${key},${value}`);
             const sql = `INSERT INTO l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
-      VALUES ((select id+${insertQueryCount} from id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${value.replace(/'/g, "''")}', (select id from l10n_resource_bundle where name = 'ui'), (select id from company where bank_structure = 'ROOT'), (select id from l10n_locale where language_code = 'en' and country_code is null));\n`;
-            sqlList.pushObject(sql);
+      VALUES ((select id+${insertQueryCount} FROM id_seq where tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${value.replace(/'/g, "''")}', (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}'), (SELECT id FROM company WHERE bank_structure = 'ROOT'), (SELECT id FROM l10n_locale WHERE language_code = 'en' AND country_code is null));\n`;
+            insertSqlList.pushObject(sql);
             insertQueryCount++;
           } else if (oldValue === value) {
             // do nothing
@@ -131,8 +136,8 @@ export default Ember.Controller.extend({
             updateList.pushObject(`UPDATE,${key},${value}`);
             const sql = `UPDATE l10n_text_resource
       SET local_value = '${value.replace(/'/g, "''")}', modified_by = '${ticketNumber}', updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
-      WHERE name = '${key}' AND locale_id = (select id from l10n_locale where language_code = 'en');\n`;
-            sqlList.pushObject(sql);
+      WHERE name = '${key}' AND locale_id = (SELECT id FROM l10n_locale where language_code = 'en') AND bundle_id =  (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}');\n`;
+            updateSqlList.pushObject(sql);
           } else {
             // kept the same
             sameList.pushObject(`NOUPDATE,${key},${oldValue},${value}`);
@@ -141,19 +146,19 @@ export default Ember.Controller.extend({
 
         // need final sql statement to add
         if (insertQueryCount) {
-          const finalQuery = `update id_seq set id = id+${insertQueryCount} where tbl='l10n_text_resource';\n`;
-          sqlList.pushObject(finalQuery);
+          const finalQuery = `UPDATE id_seq set id = id+${insertQueryCount} WHERE tbl='l10n_text_resource';\n`;
+          insertSqlList.pushObject(finalQuery);
         }
 
         oldTextMapComputed.forEach((value, key) => {
           if (!newTextMapComputed.has(key)) {
             deleteList.pushObject(`REMOVE,${key},${value}`);
-            const sql = `DELETE FROM l10n_text_resource WHERE name = '${key}';`;
-            sqlList.pushObject(sql);
+            const sql = `DELETE FROM l10n_text_resource WHERE name = '${key}' AND bundle_id = (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}');`;
+            deleteSqlList.pushObject(sql);
           }
         });
       }
-      return sqlList;
+      return insertSqlList.concat(updateSqlList, deleteSqlList);
     }
   })
 });

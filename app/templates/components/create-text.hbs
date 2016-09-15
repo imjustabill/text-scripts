@@ -9,8 +9,13 @@
     </tr>
     <tr class="info">
       <td>
-        <label>Ticket
-          #*</label> {{input class="form-control" name="ticket" type="text" placeholder="Ticket Number ( E.G. DDB-1234 )" value=ticketNumber autofocus="autofocus"}}
+        {{client-server-select bundleType=bundleType}}
+      </td>
+    </tr>
+    <tr class="info">
+      <td>
+        <label>Ticket # for each individual key
+          *</label> {{input class="form-control" name="ticket" type="text" placeholder="Ticket Number ( E.G. DDB-1234 )" value=ticketNumber autofocus="autofocus"}}
       </td>
     </tr>
     <tr class="info">
@@ -31,8 +36,9 @@
         = {{text}}{{/if}} {{input class="form-control" name="text" type="text" value=text placeholder="Enter english text"}}
       </td>
     </tr>
-    <tr class="info">
-      <td>
+    {{#if isClientBundle}}
+      <tr class="info">
+        <td>
       <span>
         <label>{{input name="placeholder" type="checkbox" checked=hasPlaceholder}} Placeholder Text (UI)</label>
         {{#if hasPlaceholder}}
@@ -40,27 +46,28 @@
           {{#if placeholderTextComputed}} = {{placeholderTextComputed}}{{/if}}
         {{/if}}
       </span>
-        {{#if hasPlaceholder}}
-          {{input name="suffixText" type="text" class="form-control"
-          placeholder="Placeholder Text" value=placeholderText}}
-          {{input name="suffixText" type="text" class="form-control"
-          placeholder="Change default placeholder key suffix (.text)" value=placeholderSuffix}}
-        {{/if}}
-      </td>
-    </tr>
-    <tr class="info">
-      <td>
+          {{#if hasPlaceholder}}
+            {{input name="suffixText" type="text" class="form-control"
+            placeholder="Placeholder Text" value=placeholderText}}
+            {{input name="suffixText" type="text" class="form-control"
+            placeholder="Change default placeholder key suffix (.text)" value=placeholderSuffix}}
+          {{/if}}
+        </td>
+      </tr>
+      <tr class="info">
+        <td>
       <span>
         <label>{{input name="required" type="checkbox" checked=hasRequired}} Required Validation (UI)</label>
       </span>{{#if hasRequired}}{{requiredKeyDisplay}}{{/if}}
-        {{#if hasRequired}}
-          {{input name="requiredText" type="text" class="form-control"
-          placeholder="Required Text" value=requiredErrorText}}
-          {{input name="prefix" type="text" class="form-control" placeholder="Change default key prefix (validate.)" value=requiredPrefix}}
-          {{input name="suffix" type="text" class="form-control" placeholder="Change default key suffix (.required)" value=requiredSuffix}}
-        {{/if}}
-      </td>
-    </tr>
+          {{#if hasRequired}}
+            {{input name="requiredText" type="text" class="form-control"
+            placeholder="Required Text" value=requiredErrorText}}
+            {{input name="prefix" type="text" class="form-control" placeholder="Change default key prefix (validate.)" value=requiredPrefix}}
+            {{input name="suffix" type="text" class="form-control" placeholder="Change default key suffix (.required)" value=requiredSuffix}}
+          {{/if}}
+        </td>
+      </tr>
+    {{/if}}
     <tr>
       <td class="text-xs-center">
         <button name="add" type="button" class="btn btn-default btn-primary" {{action 'addClicked'}}>Add</button>

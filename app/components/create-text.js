@@ -24,6 +24,20 @@ export default Ember.Component.extend({
 
   text: null,
 
+  bundleType: null,
+
+  isClientBundle: Ember.computed('bundleType', {
+    get() {
+      const bundleType = this.get('bundleType');
+      const isClientBundle = bundleType === 'ui';
+      if (!isClientBundle) {
+        this.set('hasPlaceholder', false);
+        this.set('hasRequired', false);
+      }
+      return isClientBundle;
+    }
+  }),
+
   hasPlaceholder: false,
 
   placeholderSuffix: null,

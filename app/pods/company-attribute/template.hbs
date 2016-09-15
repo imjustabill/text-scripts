@@ -75,7 +75,7 @@
     </select>
   </div>
 
-  {{available-values availableValuesList=availableValuesList hasAvailableValues=hasAvailableValues}}
+  {{available-values availableValuesList=availableValuesList isAvailableValuesEnabled=isAvailableValuesEnabled}}
 
   <div class="form-group">
     <label>Default Value</label>
@@ -155,14 +155,13 @@
     {{input class="form-control" name="uniqueType" type="text" value=uniqueType placeholder="Use Dropdown for existing values"}}
   </div>
 
+  <h2>Output (This is not done yet!!)</h2>
+
   <div class="form-group">
-    <h4>Definitions JSON (NOT STARTED YET!)</h4>
+    {{text-display text=jsonDefinitionString heading="JSON Definition" }}
   </div>
 
   <div class="form-group">
-    <h4>SQL (NOT STARTED YET!)</h4>
+    {{text-display text=sqlDisplayString heading="SQL" }}
   </div>
-
-  <!--{{sql-display sqlList=sqlList}}-->
-
 </form>
