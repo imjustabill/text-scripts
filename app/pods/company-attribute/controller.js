@@ -175,8 +175,8 @@ export default Ember.Controller.extend({
     selectGroupName(groupName) {
       this.set('groupName', groupName);
     },
-    selectSectionName(selectionName) {
-      this.set('selectionName', selectionName);
+    selectSectionName(sectionName) {
+      this.set('sectionName', sectionName);
     },
     selectValidationPattern(validationPattern){
       this.set('validationPattern', validationPattern);
