@@ -29,7 +29,7 @@ export default Ember.Controller.extend({
 
   defaultValue: null,
 
-  definitionType: null,
+  definitionType: 'SYSTEM_FEATURE',
   definitionTypes: Ember.A(['SYSTEM_FEATURE', 'SINGULAR']),
 
   displayOrder: null,
@@ -98,7 +98,6 @@ export default Ember.Controller.extend({
           defaultValue
         };
 
-        console.log('here is the json definition object', jsonDefinition);
         return jsonDefinition;
       }
     }),
@@ -106,11 +105,19 @@ export default Ember.Controller.extend({
   jsonDefinitionString: Ember.computed('jsonDefinition', {
     get() {
       const jsonDefinition = this.get('jsonDefinition');
-      console.log('here is the string version', JSON.stringify(jsonDefinition));
       return JSON.stringify(jsonDefinition,
         (key, value) => {
-          if ((Array.isArray(value) && !value.length)) {
+          if ((Array.isArray(value) && !value.length) || value === null) {
             return null;
+          } else if (key === 'availableValues') {
+            const availableValuesObject = {};
+            jsonDefinition.availableValues.forEach(availableValue => {
+              availableValuesObject[availableValue.key] = availableValue.value;
+            });
+            return availableValuesObject;
+          } else if (key === 'parent') {
+            return { id: value };
+
           } else if (typeof value === 'string') {
             return value.replace(/"/g, '\\"');
           }
@@ -128,31 +135,24 @@ export default Ember.Controller.extend({
 
       const jsonString = JSON.stringify(originalJsonDefinition,
         (key, value) => {
-          console.log('key value', key, value, typeof value);
           if (typeof value === 'string') {
-            console.log('wrapper', `'${value.replace(/'/g, "\'\'")}'`);
             return `'${value.replace(/'/g, "\'\'")}'`;
           }
-          console.log('booleans');
           return value;
         },
         2
       );
-      console.log('jsonString', jsonString);
       const jsonDefinition = JSON.parse(jsonString);
-      console.log('jsonDefinition for sql', jsonDefinition);
       let sqlDisplayString;
 
-      console.log('UNIQUE!', jsonDefinition.uniqueType);
-      // TODO NULL vs string input needs a wrapper or condition (extra property or run through a function)
       sqlDisplayString = `INSERT INTO company_attribute_definition (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,parent_name,name,group_name,section_name,title,description,display_order,is_displayable,system_owner_only,validation_pattern,validation_min,validation_max,value_type,definition_type,unique_type,parent_value_for_visibility)
   VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,${jsonDefinition.parent},${jsonDefinition.id},${jsonDefinition.groupName},${jsonDefinition.sectionName},${jsonDefinition.title},${jsonDefinition.description},${jsonDefinition.displayOrder},${jsonDefinition.isDisplayable ? '1' : '0'},${jsonDefinition.isSystemOwnerOnly ? '1' : '0'},${jsonDefinition.validationPattern},${jsonDefinition.validationMin},${jsonDefinition.validationMax},${jsonDefinition.valueType},${jsonDefinition.definitionType},${jsonDefinition.uniqueType},${jsonDefinition.parentValueForVisibility});`;
 
       // loop through available values
-      if (jsonDefinition.availableValuesList) {
-        jsonDefinition.availableValuesList.forEach(availableValue => {
+      if (jsonDefinition.availableValues) {
+        jsonDefinition.availableValues.forEach(availableValue => {
           sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute_values (definition_id,name,description)
-  VALUES (${jsonDefinition.id},${availableValue.availableKey},${availableValue.availableValue});`;
+  VALUES (${jsonDefinition.id},${availableValue.key},${availableValue.value});`;
         });
       }
 
@@ -160,7 +160,6 @@ export default Ember.Controller.extend({
   VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id+0 FROM id_seq WHERE tbl='company_attribute'),${jsonDefinition.defaultValue},(SELECT id FROM company WHERE source_company_id = 'ROOT'),${jsonDefinition.id});`;
       sqlDisplayString = `${sqlDisplayString}\nUPDATE id_seq SET id=id+1 WHERE tbl='company_attribute';\n`;
 
-      console.log('here is the sql output', sqlDisplayString);
       return sqlDisplayString;
     }
   }),
