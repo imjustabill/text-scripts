@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
 
   validationMax: null,
 
-  jsonDefinition: Ember.computed('id', 'parent', 'parentValueForVisibility', 'title', 'description', 'valueType',
+  jsonDefinition: Ember.computed('id', 'hasParent', 'parent', 'parentValueForVisibility', 'title', 'description', 'valueType',
     'availableValuesList.[]', 'defaultValue', 'definitionType', 'displayOrder', 'isDisplayable', 'isSystemOwnerOnly',
     'groupName', 'sectionName', 'uniqueType', 'validationPattern', 'validationMin', 'validationMax', {
       get() {
@@ -68,7 +68,7 @@ export default Ember.Controller.extend({
         const availableValuesList = this.get('availableValuesList');
         const defaultValue = this.get('defaultValue');
         const definitionType = this.get('definitionType');
-        const displayOrder = this.get('displayOrder');
+        const displayOrder = this.get('displayOrder') ? Number(this.get('displayOrder')) : null;
         const isDisplayable = this.get('isDisplayable');
         const isSystemOwnerOnly = this.get('isSystemOwnerOnly');
         const groupName = this.get('groupName');
@@ -77,7 +77,8 @@ export default Ember.Controller.extend({
         const validationPattern = this.get('validationPattern');
         const validationMin = this.get('validationMin');
         const validationMax = this.get('validationMax');
-        let jsonDefinition = {
+
+        return {
           id,
           groupName,
           sectionName,
@@ -97,8 +98,6 @@ export default Ember.Controller.extend({
           parent,
           defaultValue
         };
-
-        return jsonDefinition;
       }
     }),
 
@@ -157,7 +156,7 @@ export default Ember.Controller.extend({
       }
 
       sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,id,value_string,company_id,definition)
-  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id+0 FROM id_seq WHERE tbl='company_attribute'),${jsonDefinition.defaultValue},(SELECT id FROM company WHERE source_company_id = 'ROOT'),${jsonDefinition.id});`;
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id FROM id_seq WHERE tbl='company_attribute'),${jsonDefinition.defaultValue},(SELECT id FROM company WHERE source_company_id = 'ROOT'),${jsonDefinition.id});`;
       sqlDisplayString = `${sqlDisplayString}\nUPDATE id_seq SET id=id+1 WHERE tbl='company_attribute';\n`;
 
       return sqlDisplayString;
@@ -165,6 +164,16 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
+    selectHasParent(hasParent) {
+      const props = {
+        hasParent
+      };
+      if (!hasParent) {
+        props.parent = null;
+        props.parentValueForVisibility = null;
+      }
+      this.setProperties(props);
+    },
     selectValueType(valueType) {
       this.set('valueType', valueType);
     },

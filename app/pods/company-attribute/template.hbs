@@ -12,7 +12,7 @@
 
   <div class="form-group">
     <label class="form-check-label">
-      {{input class="form-check-input" name="hasParent" type="checkbox" checked=hasParent}}
+      {{input class="form-check-input" name="hasParent" type="checkbox" checked=hasParent click=(action "selectHasParent" value="target.checked") }}
       Has parent company attribute?
     </label>
   </div>
@@ -155,7 +155,7 @@
     {{input class="form-control" name="uniqueType" type="text" value=uniqueType placeholder="Use Dropdown for existing values"}}
   </div>
 
-  <h2>Output (This is not done yet!!)</h2>
+  <h2>Output (Please double check - this is in alpha mode)</h2>
 
   <div class="form-group">
     {{text-display text=jsonDefinitionString heading="JSON Definition" }}
