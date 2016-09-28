@@ -4,7 +4,7 @@ export default Ember.Controller.extend({
 
   insertQueryCount: 0,
 
-  isUpdateAllowed: true,
+  isClientOverrideAllowed: false,
 
   ticketNumber: null,
 
@@ -96,7 +96,7 @@ export default Ember.Controller.extend({
     }
   }),
 
-  sqlList: Ember.computed('oldTextMapComputed.[]', 'newTextMapComputed.[]', 'insertQueryCount', 'isUpdateAllowed', 'ticketNumber', 'bundleType', {
+  sqlList: Ember.computed('oldTextMapComputed.[]', 'newTextMapComputed.[]', 'insertQueryCount', 'isClientOverrideAllowed', 'ticketNumber', 'bundleType', {
     get() {
       const addList = this.get('addList');
       const updateList = this.get('updateList');
@@ -111,7 +111,7 @@ export default Ember.Controller.extend({
 
       const newTextMapComputed = this.get('newTextMapComputed');
       const oldTextMapComputed = this.get('oldTextMapComputed');
-      const isUpdateAllowed = this.get('isUpdateAllowed');
+      const isClientOverrideAllowed = this.get('isClientOverrideAllowed');
       const ticketNumber = this.get('ticketNumber');
       const deleteSqlList = Ember.A();
       const insertSqlList = Ember.A();
@@ -132,15 +132,16 @@ export default Ember.Controller.extend({
           } else if (oldValue === value) {
             // do nothing
             sameList.pushObject(`SAME,${key},${oldValue}`);
-          } else if (isUpdateAllowed) {
+          } else {
+            let overrideClientSQL = '';
+            if (!isClientOverrideAllowed) {
+              overrideClientSQL = `AND local_value=\'${oldValue}\' `;
+            }
             updateList.pushObject(`UPDATE,${key},${value}`);
             const sql = `UPDATE l10n_text_resource
       SET local_value = '${value.replace(/'/g, "''")}', modified_by = '${ticketNumber}', updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
-      WHERE name = '${key}' AND locale_id = (SELECT id FROM l10n_locale where language_code = 'en') AND bundle_id =  (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}');\n`;
+      WHERE name = '${key}' ${overrideClientSQL}AND locale_id = (SELECT id FROM l10n_locale where language_code = 'en') AND bundle_id =  (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}');\n`;
             updateSqlList.pushObject(sql);
-          } else {
-            // kept the same
-            sameList.pushObject(`NOUPDATE,${key},${oldValue},${value}`);
           }
         });
 
