@@ -34,7 +34,7 @@ export default Ember.Controller.extend({
 
   displayOrder: null,
 
-  isDisplayable: true,
+  isDisplayable: false,
 
   isSystemOwnerOnly: false,
 
@@ -145,7 +145,7 @@ export default Ember.Controller.extend({
       let sqlDisplayString;
 
       sqlDisplayString = `INSERT INTO company_attribute_definition (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,parent_name,name,group_name,section_name,title,description,display_order,is_displayable,system_owner_only,validation_pattern,validation_min,validation_max,value_type,definition_type,unique_type,parent_value_for_visibility)
-  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,${jsonDefinition.parent},${jsonDefinition.id},${jsonDefinition.groupName},${jsonDefinition.sectionName},${jsonDefinition.title},${jsonDefinition.description},${jsonDefinition.displayOrder},${jsonDefinition.isDisplayable ? '1' : '0'},${jsonDefinition.isSystemOwnerOnly ? '1' : '0'},${jsonDefinition.validationPattern},${jsonDefinition.validationMin},${jsonDefinition.validationMax},${jsonDefinition.valueType},${jsonDefinition.definitionType},${jsonDefinition.uniqueType},${jsonDefinition.parentValueForVisibility});`;
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,${jsonDefinition.parent},${jsonDefinition.id},${jsonDefinition.groupName},${jsonDefinition.sectionName},${jsonDefinition.title},${jsonDefinition.description},${jsonDefinition.displayOrder},${jsonDefinition.displayable ? '1' : '0'},${jsonDefinition.systemOwnerOnly ? '1' : '0'},${jsonDefinition.validationPattern},${jsonDefinition.validationMin},${jsonDefinition.validationMax},${jsonDefinition.valueType},${jsonDefinition.definitionType},${jsonDefinition.uniqueType},${jsonDefinition.parentValueForVisibility});`;
 
       // loop through available values
       if (jsonDefinition.availableValues) {

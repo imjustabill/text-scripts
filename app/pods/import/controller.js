@@ -139,7 +139,7 @@ export default Ember.Controller.extend({
             }
             updateList.pushObject(`UPDATE,${key},${value}`);
             const sql = `UPDATE l10n_text_resource
-      SET local_value = '${value.replace(/'/g, "''")}', modified_by = '${ticketNumber}', updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
+      SET local_value = '${value.replace(/'/g, "''")}', modified_by = '${ticketNumber}', version = version + 1, updated_ts = CURRENT_TIMESTAMP, modified_by_type = 'D3SCRIPT'
       WHERE name = '${key}' ${overrideClientSQL}AND locale_id = (SELECT id FROM l10n_locale where language_code = 'en') AND bundle_id =  (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}');\n`;
             updateSqlList.pushObject(sql);
           }
