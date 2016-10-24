@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 const DEFAULT_UNIQUE_TYPE = 'NONE';
+const DEFAULT_BIG_DECIMAL = 'BIG_DECIMAL';
 
 export default Ember.Controller.extend({
   ticketNumber: null,
@@ -17,7 +18,7 @@ export default Ember.Controller.extend({
 
   description: null,
 
-  valueType: null,
+  valueType: DEFAULT_BIG_DECIMAL,
   valueTypes: Ember.A(['BIG_DECIMAL', 'BIG_INTEGER', 'BOOLEAN', 'BYTE', 'DATE', 'DATE_ONLY', 'DATE_TIME', 'DECIMAL', 'DOUBLE', 'DURATION', 'EXPRESSION', 'FLOAT', 'IMAGE_NAME', 'INTEGER', 'LONG', 'MONEY', 'OBSCURED', 'PERCENT', 'RESOURCE', 'SHORT', 'STORED_CONTENT', 'STRING', 'TIME_ONLY', 'URL']),
   availableValuesList: Ember.A(),
   isAvailableValuesEnabled: Ember.computed('valueType', {
