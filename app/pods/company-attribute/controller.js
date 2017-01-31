@@ -157,7 +157,7 @@ export default Ember.Controller.extend({
       }
 
       sqlDisplayString = `${sqlDisplayString}\nINSERT INTO company_attribute (created_ts,deleted,modified_by,modified_by_type,updated_ts,version,id,value_string,company_id,definition)
-  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id FROM id_seq WHERE tbl='company_attribute'),${jsonDefinition.defaultValue},(SELECT id FROM company WHERE source_company_id = 'ROOT'),${jsonDefinition.id});`;
+  VALUES (CURRENT_TIMESTAMP,0,'${ticketNumber}','D3SCRIPT',CURRENT_TIMESTAMP,0,(SELECT id FROM id_seq WHERE tbl='company_attribute'),${jsonDefinition.defaultValue},(SELECT id FROM company WHERE bank_structure = 'ROOT'),${jsonDefinition.id});`;
       sqlDisplayString = `${sqlDisplayString}\nUPDATE id_seq SET id=id+1 WHERE tbl='company_attribute';\n`;
 
       return sqlDisplayString;
