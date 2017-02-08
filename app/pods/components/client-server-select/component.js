@@ -4,7 +4,7 @@ const bundleTypeDefault = 'ui';
 
 export default Ember.Component.extend({
   bundleType: bundleTypeDefault,
-  bundleTypes: Ember.A([bundleTypeDefault, 'server']),
+  bundleTypes: Ember.A([bundleTypeDefault, 'server', 'watch', 'security']),
 
   actions: {
     selectBundleType(bundleType) {
