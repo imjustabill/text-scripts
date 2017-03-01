@@ -50,9 +50,9 @@ export default Ember.Controller.extend({
       createdTextList.forEach(textObject => {
 
         const key = `${textObject.base}${textObject.key}`;
-        const sql = `INSERT INTO l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
+        const insertSql = `INSERT INTO l10n_text_resource (id, created_ts, deleted, updated_ts, modified_by, modified_by_type, version, digest_value, name, local_value, bundle_id, company_id, locale_id)
   VALUES ((SELECT id+${queryCount} FROM id_seq WHERE tbl = 'l10n_text_resource'), CURRENT_TIMESTAMP, 0, CURRENT_TIMESTAMP, '${textObject.ticketNumber}', 'D3SCRIPT', 0, 'none', '${key}', '${textObject.text.replace(/'/g, "''")}', (SELECT id FROM l10n_resource_bundle WHERE name = '${bundleType}'), (SELECT id FROM company WHERE bank_structure = 'ROOT'), (SELECT id FROM l10n_locale WHERE language_code = 'en' AND country_code is null));`;
-        sqlList.pushObject(sql);
+        sqlList.pushObject(insertSql);
         queryCount++;
         if (textObject.hasRequired) {
           const requiredKeyName = `${textObject.base}${textObject.requiredPrefix}${textObject.key}${textObject.requiredSuffix}`;

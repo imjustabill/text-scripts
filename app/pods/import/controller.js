@@ -40,7 +40,7 @@ export default Ember.Controller.extend({
           const valuesArray = trimmedLine.split('","');
           let key;
           let value;
-          if (valuesArray.length > 1 && valuesArray[0].length > 2) {
+          if (valuesArray.length > 1 && valuesArray[0].length > 1) {
             key = valuesArray[0].substring(valuesArray[0].indexOf('"') + 1).trim();
             value = valuesArray[1].replace(/\\"/g, '"').trim();
           }
@@ -65,7 +65,7 @@ export default Ember.Controller.extend({
           const valuesArray = trimmedLine.split('","');
           let key;
           let value;
-          if (valuesArray.length > 1 && valuesArray[0].length > 2) {
+          if (valuesArray.length > 1 && valuesArray[0].length > 1) {
             key = valuesArray[0].substring(valuesArray[0].indexOf('"') + 1).trim();
             value = valuesArray[1].replace(/\\"/g, '"').trim();
           }
